@@ -14,10 +14,10 @@ module ActiveMerchant #:nodoc:
       self.live_url = BASE_URLS[:production] + URLS[:order]
 
       # The countries the gateway supports merchants from as 2 digit ISO country codes
-      self.supported_countries = ['US', 'GB']
+      self.supported_countries = ['GB']
 
       # The card types supported by the payment gateway
-      self.supported_cardtypes = [:visa, :master, :american_express, :discover]
+      self.supported_cardtypes = [:visa, :master, :american_express, :jcb, :maestro]
 
       # The homepage URL of the gateway
       self.homepage_url = 'http://www.barclaycard.co.uk/business/accepting-payments/epdq-ecomm/extraplus/'
