@@ -43,6 +43,13 @@ module ActiveMerchant #:nodoc:
         }
         OgoneResponse.new(successful?(response), message_from(response), response, options)
       end
+      
+      def store(payment_source, options = {})
+        options.merge!(:alias_operation => 'BYPSP') unless options.has_key?(:billing_id) || options.has_key?(:store)
+        response = authorize(1, payment_source, options)
+        void(response.authorization) if response.success?
+        response
+      end
     end
   end
 end

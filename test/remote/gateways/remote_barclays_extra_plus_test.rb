@@ -163,20 +163,8 @@ class RemoteBarclaysExtraPlusTest < Test::Unit::TestCase
   def test_successful_store_generated_alias
     assert response = @gateway.store(@credit_card)
     assert_success response
-    assert purchase = @gateway.purchase(@amount, response.billing_id)
-    assert_success purchase
-  end
-
-  def test_successful_store
-    assert response = @gateway.store(@credit_card, :billing_id => 'test_alias')
-    assert_success response
-    assert purchase = @gateway.purchase(@amount, 'test_alias')
-    assert_success purchase
-  end
-
-  def test_successful_store_generated_alias
-    assert response = @gateway.store(@credit_card)
-    assert_success response
+    assert_not_nil response.billing_id
+    
     assert purchase = @gateway.purchase(@amount, response.billing_id)
     assert_success purchase
   end
