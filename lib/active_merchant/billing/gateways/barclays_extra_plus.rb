@@ -60,14 +60,14 @@ module ActiveMerchant #:nodoc:
 
         url = BASE_URLS[test? ? :test : :production] + URLS[parameters['PAYID'] ? :maintenance : :order]
         response = parse(ssl_post(url, post_data(action, parameters)))
-
+        
         options = {
           :authorization => [response["PAYID"], action].join(";"),
           :test          => test?,
           :avs_result    => { :code => AVS_MAPPING[response["AAVCheck"]] },
           :cvv_result    => CVV_MAPPING[response["CVCCheck"]]
         }
-        OgoneResponse.new(successful?(response), message_from(response), response, options)
+        BarclaysExtraPlusResponse.new(successful?(response), message_from(response), response, options)
       end
       
       def store(payment_source, options = {})
@@ -75,6 +75,12 @@ module ActiveMerchant #:nodoc:
         response = authorize(1, payment_source, options)
         void(response.authorization) if response.success?
         response
+      end
+    end
+    
+    class BarclaysExtraPlusResponse < OgoneResponse
+      def d3d_required?
+        @params['STATUS'] == "46" 
       end
     end
   end
